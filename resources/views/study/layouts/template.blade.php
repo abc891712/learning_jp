@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script src="{{ asset('./js/app.js') }}"></script>
 </head>
 <body>
 <div id="app" class="container-fluid">
@@ -36,17 +37,7 @@
                 <div class="section">
                     <ul>
                         <li>
-                            <ul class="collapsible z-depth-0" style="border: none;">
-                                <li>
-                                    <div class="collapsible-header"><a><h5>單字表</h5></a></div>
-                                    <div class="collapsible-body">
-                                        <div class="section"><a href="">全部</a></div>
-                                        <div class="section"><a href="">初級</a></div>
-                                        <div class="section"><a href="">中級</a></div>
-                                        <div class="section"><a href="">高級</a></div>
-                                    </div>
-                                </li>
-                            </ul>
+                            <div class="collapsible-header"><a href="{{ route('show') }}"><h5>單字表</h5></a></div>
                         </li>
                         <li>
                             <ul class="collapsible z-depth-0" style="border: none;">
@@ -54,7 +45,7 @@
                                     <div class="collapsible-header"><a><h5>新增單字</h5></a></div>
                                     <div class="collapsible-body">
                                         <div class="section"><a href="{{ route('create') }}">輸入單字</a></div>
-                                        <div class="section"><a href="">上傳</a></div>
+                                        <div class="section"><a href="{{ route('import') }}">上傳</a></div>
                                     </div>
                                 </li>
                             </ul>
@@ -70,14 +61,14 @@
             </div>
         </div>
         <div class="col s9 col-md-9 row">
-            <div class="col s8">
+            <div class="col s10 col-10">
                 @yield('content')
             </div>
         </div>
     </div>
 </div>
 
-    <script src="{{ asset('./js/app.js') }}"></script>
+
     <script src="https://unpkg.com/mint-ui/lib/index.js"></script>
     <script>
         $(document).ready(function(){

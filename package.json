@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "materialize-css": "^1.0.0-rc.2",
-        "mint-ui": "^2.2.13"
+        "mint-ui": "^2.2.13",
+        "vuejs-paginate": "^2.0.1"
     }
 }
