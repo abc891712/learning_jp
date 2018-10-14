@@ -150,7 +150,8 @@ return [
         /*
          * Package Service Providers...
          */
-
+        \Yish\Generators\GeneratorsServiceProvider::class,
+        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
         /*
          * Application Service Providers...
          */

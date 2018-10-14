@@ -4,14 +4,14 @@
     <form id="form_data">
         <div class="form-group">
             <div class="row">
-                <div class="col-10 col s10">
+                <div class="col-8 col s8">
                     <label for="japanese"><h5>日文</h5></label>
                     <input id="japanese" name="japanese" type="text" class="form-control">
                     <template v-if="show_japanese_errors">
                         <div class="red-text"><h6>@{{ error_messages.japanese }}</h6></div>
                     </template>
                 </div>
-                <div class="col-10 col s10">
+                <div class="col-8 col s8">
                     <label for="level"><h5>級別</h5></label>
                     <select id="level" name="level">
                         <option disable>請選擇</option>
@@ -25,14 +25,14 @@
                         <div  class="red-text"><h6>@{{ error_messages.level }}</h6></div>
                     </template>
                 </div>
-                <div class="col-10 col s10">
+                <div class="col-8 col s8">
                     <label for="word"><h5>中日</h5></label>
                     <input id="word" name="word" type="text" class="form-control">
                     <template v-if="show_word_errors">
                         <div class="red-text"><h6>@{{ error_messages.word }}</h6></div>
                     </template>
                 </div>
-                <div class="col-10 col s10">
+                <div class="col-8 col s8">
                     <label for="chinese"><h5>中文</h5></label>
                     <input id="chinese" name="chinese" type="text" class="form-control">
                     <template v-if="show_chinese_errors">
@@ -87,7 +87,7 @@
                     let url = $("#store").val();
                     let data = $('#form_data').serializeArray();
 
-                    $.ajax({
+                    $.post({
                         url: url,
                         data: data,
                         headers:{
@@ -95,7 +95,7 @@
                         },
                         type: 'post',
                         cache: false,
-                        success: function (res) {
+                        success: function (res) {console.log(res)
                             if (res.status==200){
                                 that.status = res.status;
                                 that.$toast({
@@ -107,7 +107,7 @@
                             if (res.status==202){
                                 that.status = res.status;
                                 that.$toast({
-                                    message: res.word.word+'已存在',
+                                    message: res.word+'已存在',
                                     position: 'middle',
                                     duration: 800,
                                 })

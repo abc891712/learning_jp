@@ -12,7 +12,7 @@
 */
 
 Route::get('/', 'Study\StudyController@index')->name('home');
-
+Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 Auth::routes();
 
 //Route::get('/home', 'HomeController@index')->name('home');

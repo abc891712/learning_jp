@@ -8,6 +8,8 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+var Paginate = require('vuejs-paginate');
+Vue.component('paginate', Paginate);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

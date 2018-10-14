@@ -30,7 +30,6 @@
                 </div>
             </div>
         </nav>
-
     <div class="row">
         <div class="col s3 col-md-3">
             <div class="container">
@@ -61,13 +60,11 @@
             </div>
         </div>
         <div class="col s9 col-md-9 row">
-            <div class="col s10 col-10">
-                @yield('content')
+            <div class="col s10 col-10">                @yield('content')
             </div>
         </div>
     </div>
 </div>
-
 
     <script src="https://unpkg.com/mint-ui/lib/index.js"></script>
     <script>
