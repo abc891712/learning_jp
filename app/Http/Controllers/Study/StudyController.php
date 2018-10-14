@@ -40,16 +40,16 @@ class StudyController extends Controller
      */
     public function store(ValidateWord $request)
     {
-        if ($this->check($request->japanese, $request->word)) {
+        if ($this->checkWordExist($request->japanese, $request->word)) {
             return response()->json([
                 'word' => $request->word,
-                'status'  => 202
+                'status'  => 422
             ],202);
         }
 
         Japanese::create([
             'japanese' => $request->japanese,
-            'level'    => ($request->level)+1,
+            'level'    => $request->level,
             'word'     => $request->word,
             'chinese'  => $request->chinese
         ]);
@@ -57,49 +57,26 @@ class StudyController extends Controller
         return response($request);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show()
     {
         return view('study.learning.show');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function update(ValidateWord $request)
     {
-        //
+        $word = Japanese::find($request->id);
+
+        $word->update($request->validated());
+
+        return response()->json([
+            'status' => 200,
+            'data'=>$request->validated()
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function destroy(Request $request)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        UserJapanese::destroy($request->id);
     }
 
     public function import()
@@ -139,21 +116,28 @@ class StudyController extends Controller
         $words="";
 
         if ($request->level == "12345") {
-           $words = Japanese::paginate(8);
+           $words = Japanese::selectRaw('japanese.id, japanese.japanese, japanese.level, japanese.word, japanese.chinese')
+               ->paginate(8);
         }
         if ($request->level == "45"){
-            $words = Japanese::whereIn('level', [4, 5])->paginate(8);
+            $words = Japanese::selectRaw('japanese.id, japanese.japanese, japanese.level, japanese.word, japanese.chinese')
+                ->whereIn('level', [4, 5])
+                ->paginate(8);
         }
         if ($request->level == "3"){
-            $words = Japanese::where('level', '=', 3)->paginate(8);
+            $words = Japanese::selectRaw('japanese.id, japanese.japanese, japanese.level, japanese.word, japanese.chinese')
+                ->where('level', '=', 3)
+                ->paginate(8);
         }
         if ($request->level == "12"){
-            $words = Japanese::whereIn('level', [1, 2])->paginate(8);
+            $words = Japanese::selectRaw('japanese.id, japanese.japanese, japanese.level, japanese.word, japanese.chinese')
+                ->whereIn('level', [1, 2])
+                ->paginate(8);
         }
 
         return response()->json([
             'datas' => $words,
-            'status'=> 202,
+            'status'=> 200,
         ]);
     }
 
@@ -174,5 +158,17 @@ class StudyController extends Controller
     {
         return UserJapanese::where('user_id', '=', Auth::user()->id)
                            ->where('japanese_id', '=', $japanese_id)->first();
+    }
+
+    public function getUserNotes()
+    {
+        $userNotes = UserJapanese::selectRaw('japanese.japanese, japanese.level, japanese.word, japanese.chinese, user_japanese.id')
+            ->leftjoin('japanese','user_japanese.japanese_id','=','japanese.id')
+            ->paginate(8);
+
+        return response()->json([
+            'userNotes' => $userNotes,
+            'status'    => 200
+        ]);
     }
 }

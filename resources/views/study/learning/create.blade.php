@@ -14,7 +14,7 @@
                 <div class="col-8 col s8">
                     <label for="level"><h5>級別</h5></label>
                     <select id="level" name="level">
-                        <option disable>請選擇</option>
+                        <option disabled>請選擇</option>
                         <option value="1" selected>1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -52,7 +52,7 @@
             el: "#app",
             data: {
                 error_messages: [],
-                status: 0,
+                status: "",
                 show_japanese_errors: false,
                 show_level_errors: false,
                 show_word_errors: false,
@@ -87,7 +87,7 @@
                     let url = $("#store").val();
                     let data = $('#form_data').serializeArray();
 
-                    $.post({
+                    $.ajax({
                         url: url,
                         data: data,
                         headers:{
@@ -95,8 +95,8 @@
                         },
                         type: 'post',
                         cache: false,
-                        success: function (res) {console.log(res)
-                            if (res.status==200){
+                        success: function (res) {
+                            if (res.status == 200){
                                 that.status = res.status;
                                 that.$toast({
                                     message: '新增成功',
@@ -104,7 +104,7 @@
                                     duration: 800,
                                 })
                             }
-                            if (res.status==202){
+                            if (res.status == 202){
                                 that.status = res.status;
                                 that.$toast({
                                     message: res.word+'已存在',
@@ -112,8 +112,8 @@
                                     duration: 800,
                                 })
                             }
-                            if (res.status==422){
-                                that.error_messages = res.error_messages;
+                            if (res.status == 422){
+                                that.error_messages = res.errors;
                                 that.status = res.status;
                             }
                         },

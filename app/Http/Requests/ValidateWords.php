@@ -5,8 +5,6 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\ValidationException;
 
 class ValidateWords extends FormRequest
 {
@@ -18,9 +16,9 @@ class ValidateWords extends FormRequest
     public function rules()
     {
         return [
-            '*.japanese' => 'required|regex:([ぁ-んァ-ン])',
+            '*.japanese' => 'required|regex:(^[ぁ-んァ-ン]+$)',
             '*.level'    => 'required|numeric',
-            '*.word'     => 'required|regex:([一-龯ぁ-んァ-ンa-zA-Z])',
+            '*.word'     => 'required|regex:(^[一-龯ぁ-んァ-ンa-zA-Z]+$)',
             '*.chinese'  => 'required|regex:/[\x{4e00}-\x{9fa5}]+/u',
         ];
     }
@@ -42,9 +40,11 @@ class ValidateWords extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-        $errors = (new ValidationException($validator))->errors();
+        $errors = $validator->errors();
 
-        throw new HttpResponseException(response()->json(['errors'=>$errors
-        ], JsonResponse::HTTP_ACCEPTED));
+        throw new HttpResponseException(response()->json([
+            'errors' => $errors,
+            'status' => 422,
+        ], 202));
     }
 }

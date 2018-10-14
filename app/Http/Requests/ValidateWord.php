@@ -16,9 +16,9 @@ class ValidateWord extends FormRequest
     public function rules()
     {
         return [
-            'japanese' => 'required|regex:([ぁ-んァ-ン])',
+            'japanese' => 'required|regex:(^[ぁ-んァ-ン]+$)',
             'level'    => 'required|numeric',
-            'word'     => 'required|regex:([一-龯ぁ-んァ-ンa-zA-Z])',
+            'word'     => 'required|regex:(^[一-龯ぁ-んァ-ンa-zA-Z]+$)',
             'chinese'  => 'required|regex:/[\x{4e00}-\x{9fa5}]+/u',
         ];
     }
@@ -42,7 +42,9 @@ class ValidateWord extends FormRequest
     {
         $errors = $validator->errors();
 
-        throw new HttpResponseException(response()->json(['errors'=>$errors
+        throw new HttpResponseException(response()->json([
+            'errors' => $errors,
+            'status' => 422,
         ], 202));
     }
 }

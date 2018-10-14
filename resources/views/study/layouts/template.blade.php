@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+ <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script> -->
     <script src="{{ asset('./js/app.js') }}"></script>
 </head>
 <body>
@@ -22,6 +22,13 @@
                     <ul class="right">
                         @auth
                             <li><a href="">{{ Auth::user()->name }}</a></li>
+                            <li>
+                                <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    登出
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    {{ csrf_field() }}
+                                </form></li>
                         @else
                             <li><a href="{{ route('login') }}">登入</a></li>
                             <li><a href="{{ route('register') }}">註冊</a></li>
@@ -38,6 +45,7 @@
                         <li>
                             <div class="collapsible-header"><a href="{{ route('show') }}"><h5>單字表</h5></a></div>
                         </li>
+                        @auth
                         <li>
                             <ul class="collapsible z-depth-0" style="border: none;">
                                 <li>
@@ -50,17 +58,19 @@
                             </ul>
                         </li>
                         <li>
-                            <div class="collapsible-header"><a href=""><h5>紀錄本</h5></a></div>
+                            <div class="collapsible-header"><a href="{{ route('notes') }}"><h5>紀錄本</h5></a></div>
                         </li>
                         <li>
                             <div class="collapsible-header"><a href=""><h5>練習</h5></a></div>
                         </li>
+                        @endauth
                     </ul>
                 </div>
             </div>
         </div>
         <div class="col s9 col-md-9 row">
-            <div class="col s10 col-10">                @yield('content')
+            <div class="col s10 col-10">
+                @yield('content')
             </div>
         </div>
     </div>
@@ -71,6 +81,7 @@
         $(document).ready(function(){
             $('.collapsible').collapsible();
             $('select').formSelect();
+            $('.modal').modal();
         });
     </script>
     @yield('js')
